@@ -1,0 +1,35 @@
+name: Daily Bluesky Image
+
+on:
+  schedule:
+    # Runs daily at 22:10 UTC.
+    # GitHub cron is UTC. :contentReference[oaicite:5]{index=5}
+    # Melbourne is usually UTC+11 in summer, so 22:10 UTC is about 09:10 next day in Melbourne.
+    - cron: "10 22 * * *"
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+          # Optional:
+          # BSKY_PDS: ${{ secrets.BSKY_PDS }}
+        run: |
+          python bot.py
