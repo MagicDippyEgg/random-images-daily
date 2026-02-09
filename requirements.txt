@@ -1,3 +1,4 @@
-atproto==0.0.9
-requests==2.32.3
-Pillow==10.4.0
+atproto>=0.0.65
+multiformats>=0.3.0
+requests>=2.32.0
+Pillow>=10.4.0
